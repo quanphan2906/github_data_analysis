@@ -34,15 +34,17 @@ The dataset is a sample of 10,000 data points, taken from the version 2 of the [
 
 st.header("🏆 Top choice licenses")
 
+"It is impressive to see 50% of the projects use the MIT license. The runner-ups are Apache License 2.0 (13.2%) and GNU GPL v3.0 (11.3%)."
+
 data.plot_top_licenses(7)
 
-"It is impressive to see 50% of the projects use the MIT license. The runner-ups are Apache License 2.0 and GNU GPL v3.0."
-
-"To better understand this distribution, here is a brief overview of these three licenses' features:"
+st.markdown(
+    "To understand the _why_ behind the distribution of these three most popular licenses, let's learn about their most distinctive features:"
+)
 
 st.markdown(
     """
-__MIT license__ is known for its simplicity and permissive nature. It allows users to do almost anything they want with the code, even distributing, sublicensing, and selling copies of the software. The only major requirement is to include the original copyright and license notice in any copy of the software/source code.
+__MIT license__ is known for its simplicity and permissive nature. It allows users to do almost anything they want with the code, even distributing, sublicensing, and selling copies of the software. The only major requirement is to include the original copyright and license notice in any copy of the software/source code. Thus, it is not difficult to see why the MIT license, With its simplicity and minimal requirements, is the most appealing license for open-source developers.
 """
 )
 
@@ -54,21 +56,34 @@ st.markdown(
 
 st.markdown(
     """
-    A key feature of __GNU GPL v3.0__ is its strong copyleft requirement. If you distribute modified versions of GPLv3-licensed software, you must also distribute the entire source code under GPLv3. This ensures that all modified versions of the software remain free and open.
+    In contrast to MIT and Apache 2.0, __GNU GPL v3.0__ is known for its strong copyleft requirement. If you distribute modified versions of GPLv3-licensed software, you must also distribute the entire source code under GPLv3. This ensures that all modified versions of the software remain free and open.
     """
 )
 
-"With this understanding, we can hypothesize the reasons behind the distribution we saw earlier. The MIT license, due to its simplicity and minimal requirements, becomes the most widely adopted license across the open-sourced community. The runner-ups, Apache  2.0 and GNU GPL v3.0, are also famous because they are as permissive as the MIT license, but are less appealing as the champion due to their additional requirements, including the modifications documentation requirement of Apache 2.0 and the strong copyleft of GNU GPL v3.0."
+"In short, while being as permissive as the MIT license, both Apache 2.0 and GNU GPL v3.0 cannot top the champion due to their additional requirements, which significantly contribute to the maintenance 'costs' of the open-source project."
 
 st.header("🍉 Prefered license types in popular vs. regular repositories")
 
 st.subheader("Hypothesis")
-"One hypothesis that might spring off from our understanding of the licenses is this. MIT license might be more appealing to a typical, small-scale project due to its simplicity. Conversely, the Apache 2.0 License offers more protection against patent infringement claims and has explicit grants of patent rights. This might make it more appealing for larger and commercially-oriented projects, which could be more prevalent in the popular group."
+"One hypothesis that might spring off from our understanding of the licenses is that..."
+
+st.markdown(
+    """
+- MIT license might be more appealing to a typical, small-scale project due to its simplicity. 
+- Conversely, the Apache 2.0 License is more appealing for larger, more popular, and commercially-oriented projects because it offers more protection against patent infringement claims and has explicit grants of patent rights.
+"""
+)
 
 st.subheader("Popular vs. regular repositories")
 
 st.markdown(
-    """To examine this hypothesis, I first define what a popular repository is versus a typically small-scale one, and separate them into two groups: A popular (and mature) project is any project with the __weighted average number of stars, watchers, forks, and pull requests larger than the upper interquartile range of this metric__. The rest, I call regular projects. 
+    """To examine this hypothesis, I need to distinguish large and popular repositories versus typical, small-scale ones. To do this, I use a proxy metric, that is the weighted average of a several numeric metrics in the dataset.
+    """
+)
+
+st.markdown(
+    """
+    Here's my formal definition: A popular (and mature) project is any project with the __weighted average number of stars, watchers, forks, and pull requests larger than the upper interquartile range of this metric__. The rest, I call regular projects. 
     """
 )
 
@@ -81,7 +96,7 @@ f"By this definition, we have {typical} typical repositories ({typical / (typica
 
 st.markdown(
     """
-    In defining my proxy metric, I intentionally leave out the number of commits. My _assumption_ is that the number of commits does not necessarily correlate with the maturity of a project. A high number of commits might just mean a high number of bug fixes. Alternatively, beginner developers can push many commits without good reasons. I also use the upperquartile range of this proxy metric as a cutoff point because as a norm in the Stats community, anything beyond the upperquartile range is considered outliers.
+    In defining my proxy metric, I intentionally leave out the number of commits. My _assumption_ is that the number of commits does not necessarily correlate with the maturity of a project. A high number of commits might just mean a high number of bug fixes. Alternatively, beginner developers can push many commits without good reasons. I also use the upperquartile range of this proxy metric as a cutoff point because as a norm in the Stats community, anything beyond the upperquartile range is considered outliers, i.e "the top of the top". In my analysis, I really want to focus on the constrast between this "extreme" group and the rest.
     """
 )
 
@@ -96,27 +111,35 @@ data.plot_license_dist(license_distribution_outliers, license_distribution_typic
 
 st.header("⌨️ Prefered license types across different open-sourced communities")
 
-"Here, I have no hypothesis to start out with, so let's begin by getting to know the largest programming communities:"
+"In this section, I have no hypothesis to start out with, so let's begin by getting to know the largest programming communities:"
 
 top_10_languages = data.get_and_plot_top_10_languages()
 
-"This is a well-expected list. Let's see how the choice of license differs across the communities."
+"This is a well-expected list, with Python and Javascript taking the lead. Let's see how the choice of license differs across these programming-language communities."
 
 data.plot_lang_and_license(top_10_languages)
 
-"Notice the high usage proportion of MIT license in Javascript and Typescript projects. This pattern well aligns with the strong culture of sharing and building upon others' work in the web development world (which heavily uses Javascript and Typescript). In addition, many large and influential projects in these languages (like Angular, React, Express.js) use the MIT License, setting a precedent for others in the community."
+"The high usage proportion of MIT license in Javascript (JS) and Typescript (TS) projects (approximately 70% for both groups) well aligns with the strong culture of sharing and building upon others' work in the web development world (which heavily uses JS and TS)."
+
+"Another factor that might influence the wide adoption of the MIT license in the JS and TS communities is the fact that many large and influential projects in these languages (like Angular, React, Express.js) use the MIT License, setting a precedent for others in the community."
+
+"In contrast..."
 
 data.plot_lang_and_license(top_10_languages, "Apache License 2.0")
 
 "Apache License 2.0 is significantly more popular in the Java community than the rest. The connection between these two are more subtle. One hypothesis is that since both Java and Apache 2.0 (with its explicit grants of patent rights) are widely used in the enterprise environments, there are more Java projects with Apache 2.0 than other languages."
 
+"Finally..."
+
 data.plot_lang_and_license(top_10_languages, "GNU General Public License v3.0")
 
-"Finally, we see GNU GPL v3.0 is more widely used in the C++ and Python communities than the rest, although the difference is not that significant."
+"GNU GPL v3.0 is more widely used in the C++ and Python communities than the rest, although the difference is not that significant."
 
 st.header("🍊 Conclusion")
 
-"In this analysis, I have explored and answered all the questions in the Introduction related to the choice of licenses. Here are some highlights..."
+st.markdown(
+    """In this analysis, I have explored and answered all the questions in the __Introduction__ related to the choice of licenses. Here are some highlights..."""
+)
 
 st.markdown(
     """
@@ -126,4 +149,4 @@ st.markdown(
     """
 )
 
-"I hope you had fun following this analysis and it is somehow helpful for your choice of license in your next open-source project. Thanks for following along and will see you in an interview 😉"
+"That's all for today. I hope you had fun following this analysis and it is somehow helpful for your choice of license in your next open-source project. Thanks for following along and will see you in an interview 😉"
